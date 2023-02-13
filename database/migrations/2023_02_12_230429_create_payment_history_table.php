@@ -1,6 +1,6 @@
 <?php
 
-use Dminustin\BfcPayments\Enums\CurrencyEnum;
+use Dminustin\BfcPayments\Enums\PaymentStateEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,11 +13,13 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('payment_history', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->bigInteger('user_id');
-            $table->string('currency', 3)->default(CurrencyEnum::CURRENCY_EUR->value);
-            $table->decimal('amount', 24, 12);
+            $table->uuid('payment_id')->index();
+            $table->uuid('order_id')->index();
+            $table->string('payment_state')->default(PaymentStateEnum::STATUS_UNKNOWN->value);
+            $table->text('response_text')->nullable();
+            $table->integer('response_code')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('payment_history');
     }
 };

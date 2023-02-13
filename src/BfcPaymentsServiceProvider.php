@@ -16,8 +16,8 @@ class BfcPaymentsServiceProvider extends ServiceProvider
          */
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'bfc-payments');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'bfc-payments');
-        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        // $this->loadRoutesFrom(__DIR__.'/routes.php');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->loadRoutesFrom(__DIR__.'/routes.php');
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
@@ -53,8 +53,8 @@ class BfcPaymentsServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'bfc-payments');
 
         // Register the main class to use with the facade
-        $this->app->singleton('bfc-payments', function () {
-            return new BfcPayments;
+        $this->app->singleton(BfcPayments::class, function () {
+            return new BfcPayments();
         });
     }
 }
